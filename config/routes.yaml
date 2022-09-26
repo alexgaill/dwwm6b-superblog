@@ -1,3 +1,11 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
+
+# hello:
+#     controller: App\Controller\HomeController::hello # On indique le namespace et le nom du controller puis le nom de la méthode à charger
+#     path: /hello
+
+# bye:
+#     controller: App\Controller\HomeController::bye
+#     path: /bye
