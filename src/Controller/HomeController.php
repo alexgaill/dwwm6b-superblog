@@ -1,9 +1,11 @@
 <?php
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Category;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * En symfony un controller va contenir toute la logique métier à ajouter sur les pages.
@@ -35,9 +37,24 @@ class HomeController extends AbstractController{
         return new Response("<h1>Au revoir</h1>");
     }
 
+    /**
+     * On utilise l'injection de dépendance pour charger les dépendances dont on a besoin dans la méthode
+     * Ici le ManagerRegistry permettant de charger le Repository en question
+     *
+     * @param ManagerRegistry $manager
+     * @return Response
+     */
     #[Route("/", name:"home")]
-    public function home(): Response
+    public function home(ManagerRegistry $manager): Response
     {
-        return $this->render("home.html.twig");
+        // On appelle la méthode getRepository qui charge le Repository rattaché à l'entité choisie
+        $categories = $manager->getRepository(Category::class)->findAll();
+        // dump permet de débugguer
+        dump($categories);
+
+        // La méthode render permet de charger un template. Elle permet également de passer des informations au template
+        return $this->render("home.html.twig", [
+            'categories' => $categories
+        ]);
     }
 }
