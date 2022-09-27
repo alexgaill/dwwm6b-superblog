@@ -2,7 +2,7 @@
 
 Ce projet est réalisé avec la promotion **altrh DWWM6B** de l'année 2022.
 
-Vous pouvez retrouver le projet sur <https://github.com/alexgaill/DWWM6B-symfony>.
+Vous pouvez retrouver le projet sur <https://github.com/alexgaill/DWWM6B-superblog>.
 
 ## Liens utiles
 > [Installer composer](https://getcomposer.org/download/)
@@ -37,6 +37,7 @@ composer install #installe les dépendances nécessaires au bon fonctionnement d
 # DATABASE_URL="mysql://root:root@127.0.0.1:8889/superblog" # mamp
 
 symfony console doctrine:database:create
+symfony console make:migration
 symfony console doctrine:migrations:migrate
 symfony server:start
  ``` 
