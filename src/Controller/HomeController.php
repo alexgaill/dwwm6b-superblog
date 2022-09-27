@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,8 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * Pour faciliter le lien avec le composant Routing, on utilise les attributs au-dessus de chaque méthode 
  * pour préciser les informations de la Route. 
  * On évite ainsi de tout écrire dans le fichier de config routes.yaml
+ * 
+ * L'AbstractController est le controller par défaut de Symfony. Il possède différentes méthodes très pratiques.
  */
-class HomeController {
+class HomeController extends AbstractController{
 
     /**
      * Affiche la page Hello
@@ -30,5 +33,11 @@ class HomeController {
     public function bye(): Response
     {
         return new Response("<h1>Au revoir</h1>");
+    }
+
+    #[Route("/", name:"home")]
+    public function home(): Response
+    {
+        return $this->render("home.html.twig");
     }
 }

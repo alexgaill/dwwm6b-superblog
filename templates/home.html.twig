@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1 class="mt-3">Bienvenue sur le Superblog</h1>
+    <p>Sur ce blog on parle de tout et on teste le framework Symfony</p>
+
+    {% set variable = true %}
+
+    {% if variable %}
+    {# Twig propose des filtres pour modifier l'affichage de nos textes. Ici upper mets le texte en uppercase. #}
+        <h2>{{ "Voir nos derniers articles"|upper }}</h2>
+    {% else %}
+        <h2>Pas d'articles pour le moment</h2>
+    {% endif %}
+{% endblock %}
