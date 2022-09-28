@@ -19,7 +19,12 @@
 					{% for category in categories %}
 						<tr>
 							<td>{{ category.id }}</td>
-							<td>{{ category.name }}</td>
+                            {# 
+                                path est une fonction de twig permettant de générer un lien vers une autre page.
+                                On génère ici le lien vers la méthode single_category en lui passant le paramètre dont on a besoin
+                                qui est l'id de la catégorie.
+                            #}
+							<td><a href="{{ path('single_category', {id: category.id}) }}">{{ category.name }}</a></td>
 						</tr>
 					{% endfor %}
 				{% else %}
