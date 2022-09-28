@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="col-6 mx-auto">
+    <h1 class="text-center mt-3">{{post.title}}</h1>
+    <p>{{post.description}}</p>
+    <small class="text-secondary">Article rédigé le {{post.createdAt|format_date('long', locale='fr')}}</small>
+</div>
+
+{% endblock %}

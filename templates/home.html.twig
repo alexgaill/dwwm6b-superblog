@@ -1,10 +1,12 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-	<h1 class="mt-3">Bienvenue sur le Superblog</h1>
-	<p>Sur ce blog on parle de tout et on teste le framework Symfony</p>
-	{# Twig propose des filtres pour modifier l'affichage de nos textes. Ici upper mets le texte en uppercase. #}
-	<h2>{{ "Voir nos derniers articles"|upper }}</h2>
+	<div class="col-6 mx-auto text-center">
+		<h1 class="mt-3">Bienvenue sur le Superblog</h1>
+		<p>Sur ce blog on parle de tout et on teste le framework Symfony</p>
+		{# Twig propose des filtres pour modifier l'affichage de nos textes. Ici upper mets le texte en uppercase. #}
+		<h2>{{ "Voir nos derniers articles"|upper }}</h2>
+	</div>
 
 	<div class="col-6 mx-auto">
 		<table class="table table-striped table-hover">

@@ -14,12 +14,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class PostController extends AbstractController
 {
+
+    public function __construct(
+        private ManagerRegistry $manager
+    ){}
+
     #[Route('/post', name: 'app_post')]
-    public function index(ManagerRegistry $manager): Response
+    public function index(): Response
     {
         return $this->render('post/index.html.twig', [
             // On refactorise notre code pour être le plus clair et léger possible
-            'posts' => $manager->getRepository(Post::class)->findAll()
+            'posts' => $this->manager->getRepository(Post::class)->findAll()
+        ]);
+    }
+
+    #[Route('/post/{id}', name:'single_post', requirements:['id' => "\d+"], methods: ["GET"])]
+    public function single(int $id): Response
+    {
+        return $this->render('post/single.html.twig', [
+            'post' => $this->manager->getRepository(Post::class)->find($id)
         ]);
     }
 }

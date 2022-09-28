@@ -18,7 +18,7 @@
     {% for post in posts %}
         <tr>
             <td>{{ post.id }}</td>
-            <td>{{ post.title }}</td>
+            <td><a href="{{ path('single_post', {id: post.id}) }}">{{ post.title }}</a></td>
             {# [0:100] correspond au filtre slice permettant d'acchifer les 100 premiers caractères de la description #}
             <td>{{ post.description[0:100]~ ' ...' }}</td>
             <td>{{ post.createdAt|format_date('medium', locale='fr') }}</td>
