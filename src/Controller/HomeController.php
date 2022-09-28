@@ -50,7 +50,7 @@ class HomeController extends AbstractController{
         // On appelle la méthode getRepository qui charge le Repository rattaché à l'entité choisie
         $categories = $manager->getRepository(Category::class)->findAll();
         // dump permet de débugguer
-        dump($categories);
+        // dump($categories);
 
         // La méthode render permet de charger un template. Elle permet également de passer des informations au template
         return $this->render("home.html.twig", [
