@@ -3,5 +3,5 @@
 {% block body %}
     <h1>Mettre à jour une catégorie</h1>
 
-    {{ form(categoryForm) }}
+    {% include "category/_form.html.twig" with {form:categoryForm, submitLabel:'Mettre à jour'} %}
 {% endblock %}

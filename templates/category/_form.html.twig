@@ -1,0 +1,24 @@
+{# {{ form(form) }} On affiche un formulaire avec un nom générique #}
+
+{{ form_start(form) }}
+
+    <div class="d-flex justify-content-evenly col-6">
+    {# form_row permet de placer la div contenant l'input, le label et autres informations d'un champs #}
+    {{ form_row(form.name, {
+        'row_attr': {'class': 'col-7 form-floating mb-3'},
+        'attr': {'placeholder':"Nom de la catégorie"}
+        } ) }}
+    {{ form_row(form.submit, {
+        'row_attr': {'class': 'col-3 mb-3'},
+        'label': submitLabel|default('Ajouter')
+        }) }}
+    </div>
+
+    <div class="text-danger">
+        {# Gère l'affichage des erreurs #}
+        {{ form_errors(form.name) }}
+    </div>
+
+        <small>{{ form_help(form.name, {'help_attr':{'class':"text-info"}}) }}</small>
+
+{{ form_end(form) }}

@@ -83,7 +83,7 @@ class CategoryController extends AbstractController
         // On peut retrouver la méthode render mais dans ce cas, on passe en paramètre pour le form
         // $form->createView()
         return $this->renderForm("category/save.html.twig", [
-            'CategoryForm' => $form
+            'categoryForm' => $form
         ]);
     }
 
