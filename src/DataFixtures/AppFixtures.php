@@ -21,8 +21,8 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        
         $this->createCategory($manager);
-        $this->createPost($manager);
         // On exécute toutes els requêtes en attente puis on vide la file.
         $manager->flush();
     }
@@ -37,16 +37,22 @@ class AppFixtures extends Fixture
             $category->setName($this->faker->words(3, true));
             // On ajoute la catégorie en file d'attente pour être enregistrer en BDD
             $manager->persist($category);
+            // On appelle la méthode createPost pour associer 10 articles à chaque catégorie
+            // On passe la catégorie nouvellement créée aux articles.
+            $this->createPost($manager, $category);
         }
     }
 
-    private function createPost (ObjectManager $manager): void
+    private function createPost (ObjectManager $manager, Category $category): void
     {
-        for ($i=0; $i < 100; $i++) { 
+        for ($i=0; $i < 10; $i++) { 
             $post = new Post;
             $post->setTitle($this->faker->words(5, true))
                 ->setDescription($this->faker->paragraphs(5, true))
-                ->setCreatedAt($this->faker->dateTime());
+                ->setCreatedAt($this->faker->dateTime())
+                // setCategory permet d'associer une catégorie à l'article
+                ->setCategory($category)
+                ;
             
             $manager->persist($post);
         }

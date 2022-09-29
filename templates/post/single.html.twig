@@ -4,7 +4,14 @@
 <div class="col-6 mx-auto">
     <h1 class="text-center mt-3">{{post.title}}</h1>
     <p>{{post.description}}</p>
-    <small class="text-secondary">Article rédigé le {{post.createdAt|format_date('long', locale='fr')}}</small>
+    <small class="text-secondary">
+        Article rédigé le {{post.createdAt|format_date('long', locale='fr')}} appartenant à la catégorie 
+        <span >
+            <a href="{{ path('single_category', {id: post.category.id}) }}" class="text-success">
+                {{ post.category.name }}
+            </a>
+        </span>
+    </small>
 </div>
 
 {% endblock %}
