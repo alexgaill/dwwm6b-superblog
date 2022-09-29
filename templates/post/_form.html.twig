@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+    <div class="mb-3 form-floating">
+        {{form_label(form.title)}}
+        {{form_widget(form.title, {'attr': {'placeholder': "Titre de l'article"}})}}
+    </div>
+    <div class="mb-3">
+        {{form_label(form.description)}}
+        {{form_widget(form.description)}}
+    </div>
+
+    {{form_row(form.submit, {'label': postSubmit|default('Ajouter')})}}
+
+    <div class="form-error">
+        {{ form_errors(form, {'attr': {'class': 'text-danger'}})}}
+    </div>
+
+{{ form_end(form) }}

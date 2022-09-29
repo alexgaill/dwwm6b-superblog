@@ -2,5 +2,5 @@
 
 {% block body %}
     <h1>Ajout d'un nouvel article</h1>
-    {{ form(PostForm) }}
+    {% include "post/_form.html.twig" with {form:postForm, postSubmit:"Ajouter"} %}
 {% endblock %}

@@ -65,7 +65,7 @@ class PostController extends AbstractController
         }
 
         return $this->renderForm("post/save.html.twig", [
-            'PostForm' => $form
+            'postForm' => $form
         ]);
     }
 
