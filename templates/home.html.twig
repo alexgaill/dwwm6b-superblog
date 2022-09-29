@@ -14,6 +14,7 @@
 				<tr>
 					<th>#</th>
 					<th>Nom</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,6 +28,14 @@
                                 qui est l'id de la catégorie.
                             #}
 							<td><a href="{{ path('single_category', {id: category.id}) }}">{{ category.name }}</a></td>
+							<td>
+								<a href="{{ path('update_category', {id: category.id}) }}">
+									<button class="btn btn-info">Modifier</button>
+								</a>
+								<a href="{{ path('delete_category', {id: category.id}) }}">
+									<button class="btn btn-danger" onclick="alert('Etes-vous sûr de vouloir supprimer?')">Supprimer</button>
+								</a>
+							</td>
 						</tr>
 					{% endfor %}
 				{% else %}

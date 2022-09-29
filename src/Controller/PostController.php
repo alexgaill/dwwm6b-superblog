@@ -33,8 +33,17 @@ class PostController extends AbstractController
     #[Route('/post/{id}', name:'single_post', requirements:['id' => "\d+"], methods: ["GET"])]
     public function single(int $id): Response
     {
+
+        // $post = $this->manager->getRepository(Post::class)->find($id);
+        // if (!$post) {
+        //     throw $this->createNotFoundException("L'article recherché n'existe pas");
+        // }
+
         return $this->render('post/single.html.twig', [
-            'post' => $this->manager->getRepository(Post::class)->find($id)
+            'post' => $this->manager->getRepository(Post::class)->find($id) ?? 
+                        // Si on ne trouve pas l'article correspondant, on tombe de l'autre côté de ??
+                        // et on lance une erreur Not Found
+                      throw $this->createNotFoundException("L'article recherché n'existe pas")
         ]);
     }
 

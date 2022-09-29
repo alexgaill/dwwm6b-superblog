@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\CategoryType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -84,5 +85,47 @@ class CategoryController extends AbstractController
         return $this->renderForm("category/save.html.twig", [
             'CategoryForm' => $form
         ]);
+    }
+
+    #[Route("/category/{id}/update", name:"update_category", requirements: ['id' => "\d+"], methods:['GET', 'POST'])]
+    public function update (int $id, ManagerRegistry $manager, Request $request) :Response
+    {
+        // 1. On récupère la catégorie
+            $category = $manager->getRepository(Category::class)->find($id);
+            // Si la catégorie recherchée n'existe pas, on redirige l'utilisateur vers la page d'accueil.
+            if (!$category) {
+                return $this->redirectToRoute('home');
+            }
+        // 2. On génère le formulaire
+            $form = $this->createForm(CategoryType::class, $category);
+            $form->handleRequest($request);
+        // 3. On vérifie les données reçues du formulaire
+            if ($form->isSubmitted() && $form->isValid()) {
+                // 4. On enregistre la modification
+                $om = $manager->getManager();
+                $om->persist($category);
+                $om->flush();
+
+                return $this->redirectToRoute('single_category', ['id' => $category->getId()]);
+            }
+
+            return $this->renderForm('category/update.html.twig', [
+                'categoryForm' => $form
+            ]);
+    }
+
+    #[Route("/category/{id}/delete", name:"delete_category", methods:['GET'], requirements:['id' => "\d+"])]
+    public function delete (int $id, ManagerRegistry $manager): Response
+    {
+        $category = $manager->getRepository(Category::class)->find($id);
+        
+        if ($category) {
+            $om = $manager->getManager();
+            // Remove permet de supprimer un élément en BDD
+            $om->remove($category);
+            $om->flush();
+        }
+
+        return $this->redirectToRoute('home');
     }
 }
