@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\PostRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -15,6 +17,13 @@ class Post
     private ?int $id = null;
 
     #[ORM\Column(length: 120)]
+    #[Assert\Length(
+        min:5,
+        max:120,
+        minMessage: "Le titre de l'article doit faire au minimum {{ limit }} caractères.",
+        maxMessage: "Le titre de l'article doit faire au maximum {{ limit }} caractères."
+    )]
+    #[Assert\NotBlank(message:"Le titre de l'article doit obligatoirement être complété")]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -24,6 +33,7 @@ class Post
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type:Types::STRING, length:40, nullable:true)]
+    #[Assert\File(maxSize:"2M", MimeTypes: ['image/png', 'image/jpeg'])]
     private ?string $picture = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
