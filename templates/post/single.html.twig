@@ -3,6 +3,7 @@
 {% block body %}
 <div class="col-6 mx-auto">
     <h1 class="text-center mt-3">{{post.title}}</h1>
+    <img src="{{ asset('assets/img/uploads/posts/' ~ post.picture) }}" alt="{{ post.title }}">
     <p>{{post.description}}</p>
     <small class="text-secondary">
         Article rédigé par <a href="{{ path('show_user', {id: post.user.id}) }}" class="text-dark">{{ post.user.prenom }} {{ post.user.nom }}</a>

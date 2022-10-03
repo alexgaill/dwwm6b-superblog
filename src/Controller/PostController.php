@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -55,7 +56,25 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            // On récupère les informations de l'image non mappée
+            $picture = $form->get('picture')->getData(); // On récupère un objet File
+            if ($picture) {
+               
+                // On attribue un nouveau nom à l'image
+                // $picture->guessExtension() est une méthode permettant de récupérer l'extension du fichier
+                $pictureName = md5(uniqid()).'.'. $picture->guessExtension();
+                // On enregistre l'image sur le serveur
+                try {
+                    $picture->move(
+                        $this->getParameter('upload_dir'),
+                        $pictureName
+                    );
+                } catch (FileException $e) {
+                    $error = $e->getMessage();
+                }
+                // On enregistre l'image en BDD
+                $post->setPicture($pictureName);
+            }
             $post->setCreatedAt(new \DateTime);
             $om = $this->manager->getManager();
             $om->persist($post);
@@ -76,11 +95,31 @@ class PostController extends AbstractController
         if (!$post) {
             return $this->redirectToRoute('app_post');
         }
-
+        
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            // On récupère les informations de l'image non mappée
+            $picture = $form->get('picture')->getData(); // On récupère un objet File
+            // Cas où pas de nouvelle image ajoutée
+            if ($picture) {
+                if ($post->getPicture()) {
+                    // Cas où l'ancienne image est à remplacer
+                    unlink($this->getParameter('upload_dir') . '/' . $post->getPicture());
+                }
+                // Cas où pas d'ancienne image
+                $pictureName = md5(uniqid()).'.'. $picture->guessExtension();
+                try {
+                    $picture->move(
+                        $this->getParameter('upload_dir'),
+                        $pictureName
+                    );
+                } catch (FileException $e) {
+                    $error = $e->getMessage();
+                }
+                $post->setPicture($pictureName);
+            }
             $om = $this->manager->getManager();
             $om->persist($post);
             $om->flush();

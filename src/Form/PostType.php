@@ -2,8 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,6 +26,24 @@ class PostType extends AbstractType
                 'label' => "Titre de l'article"
             ])
             ->add('description', TextareaType::class)
+            ->add('category', EntityType::class, [
+                // class permet d'indiquer l'entité asscoiée au champ
+                'class' => Category::class,
+                // On affiche le name de la catégorie pour le choix de celle-ci
+                'choice_label'=> 'name'
+            ])
+            ->add('user', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'nom',
+                // Expanded permet de changer l'input en radio
+                // Si option multiple en plus, change le type en checkbox
+                'expanded' => true
+            ])
+            ->add('picture', FileType::class, [
+                'label' => "Image à la une",
+                'mapped' => false,
+                'required' => false
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => "Ajouter"
             ])
