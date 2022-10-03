@@ -6,12 +6,14 @@ use Faker\Factory;
 use Faker\Generator;
 use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
     private Generator $faker;
+    private array $users;
 
     public function __construct()
     {
@@ -21,7 +23,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        
+        $this->users = $this->createUser($manager);
         $this->createCategory($manager);
         // On exécute toutes els requêtes en attente puis on vide la file.
         $manager->flush();
@@ -52,9 +54,31 @@ class AppFixtures extends Fixture
                 ->setCreatedAt($this->faker->dateTime())
                 // setCategory permet d'associer une catégorie à l'article
                 ->setCategory($category)
+                // On associe un utilisateur aléatoire provenant du tableau d'utilisateurs créés
+                ->setUser($this->users[rand(0, count($this->users) -1)])
                 ;
             
             $manager->persist($post);
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param ObjectManager $manager
+     * @return array<User>
+     */
+    private function createUser(ObjectManager $manager): array
+    {
+        $users = array();
+        for ($i=0; $i < 3; $i++) { 
+            $user = new User;
+            $user->setPrenom($this->faker->firstName())
+                ->setNom($this->faker->lastName());
+            $manager->persist($user);
+            $users[] = $user;
+        }
+
+        return $users;
     }
 }
