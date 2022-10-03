@@ -70,7 +70,7 @@ class PostController extends AbstractController
                         $pictureName
                     );
                 } catch (FileException $e) {
-                    $error = $e->getMessage();
+                    $this->addFlash("danger", "Une erreur est survenue durant l'enregistrement de l'image: " . $e->getMessage());
                 }
                 // On enregistre l'image en BDD
                 $post->setPicture($pictureName);
@@ -79,7 +79,7 @@ class PostController extends AbstractController
             $om = $this->manager->getManager();
             $om->persist($post);
             $om->flush();
-
+            $this->addFlash("success", $post->getTitle() . " a bien été créé");
             return $this->redirectToRoute("single_post", ['id' => $post->getId()]);
         }
 
@@ -93,6 +93,7 @@ class PostController extends AbstractController
     {
         $post = $this->manager->getRepository(Post::class)->find($id);
         if (!$post) {
+            $this->addFlash('danger', "L'article que vous souhaitez modifier n'existe pas");
             return $this->redirectToRoute('app_post');
         }
         
@@ -115,15 +116,16 @@ class PostController extends AbstractController
                         $this->getParameter('upload_dir'),
                         $pictureName
                     );
+                    $this->addFlash('success', "Image modifiée correctement");
                 } catch (FileException $e) {
-                    $error = $e->getMessage();
+                    $this->addFlash("danger", "Une erreur est survenue durant l'enregistrement de l'image: " . $e->getMessage());
                 }
                 $post->setPicture($pictureName);
             }
             $om = $this->manager->getManager();
             $om->persist($post);
             $om->flush();
-
+            $this->addFlash('success', "Article mis à jour correctement");
             return $this->redirectToRoute('single_post', ['id' => $post->getId()]);
         }
 
@@ -141,7 +143,7 @@ class PostController extends AbstractController
             $om->remove($post);
             $om->flush();
         }
-
+        $this->addFlash('info', "L'article a bien été supprimé");
         return $this->redirectToRoute('app_post');
     }
 }
