@@ -32,6 +32,30 @@
 							<li class="nav-item">
 								<a class="nav-link active" aria-current="page" href="{{path('app_post')}}">Nos articles</a>
 							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="userNav" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									{% if app.user %}
+										{{ app.user.prenom }} {{ app.user.nom }}
+									{% else %}
+										Utilisateur
+									{% endif %}
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="userNav">
+								{% if app.user %}
+									<li>
+										<a class="dropdown-item" href="{{path('app_logout')}}">Deconnexion</a>
+									</li>
+								{% else %}
+									<li>
+										<a class="dropdown-item" href="{{path('app_register')}}">Inscription</a>
+									</li>
+									<li><hr class="dropdown-divider"></li>
+									<li>
+										<a class="dropdown-item" href="{{path('app_login')}}">Connexion</a>
+									</li>
+								{% endif %}
+								</ul>
+							</li>
 						</ul>
 					</div>
 				</div>

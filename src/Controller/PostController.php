@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\PostType;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,6 +50,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/post/save', name:"add_post", methods:['GET', 'POST'])]
+    #[IsGranted("ROLE_AUTHOR", message:"Seuls les auteurs peuvent accéder à cette page", statusCode: 403)]
     public function save(Request $request): Response
     {
         $post = new Post;
@@ -91,6 +93,12 @@ class PostController extends AbstractController
     #[Route("/post/{id}/update", name:"update_post", methods:['GET', 'POST'], requirements:['id' => "\d+"])]
     public function update(int $id, Request $request): Response
     {
+        // isGranted est une méthode de l'AbstractController qui vérifie que l'utilisateur connecté possède un certain rôle
+        if (!$this->isGranted("ROLE_AUTHOR")) {
+            $this->addFlash('danger', "Vous n'avez pas les droits pour modifier un article");
+            return $this->redirectToRoute('home');
+        }
+
         $post = $this->manager->getRepository(Post::class)->find($id);
         if (!$post) {
             $this->addFlash('danger', "L'article que vous souhaitez modifier n'existe pas");
@@ -137,6 +145,8 @@ class PostController extends AbstractController
     #[Route('/post/{id}/delete', name:'delete_post', requirements:['id' => "\d+"], methods:['GET'])]
     public function delete (int $id): Response
     {
+        // Refuse l'accès à toute personne n'ayant pas le rôle définit et la renvoie sur une page d'erreur
+        $this->denyAccessUnlessGranted("ROLE_ADMIN", 'Accès refusé', 'Accès limité aux admin');
         $post = $this->manager->getRepository(Post::class)->find($id);
         if ($post) {
             $om = $this->manager->getManager();

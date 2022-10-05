@@ -44,7 +44,7 @@ class PostType extends AbstractType
                 'label' => "Image à la une",
                 'mapped' => false,
                 'required' => false,
-                'cosntraints' => [
+                'constraints' => [
                     new File([
                         'mimeTypes' => ['image/png', 'image/jpeg']
                     ])

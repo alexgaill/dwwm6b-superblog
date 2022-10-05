@@ -14,7 +14,9 @@
 				<tr>
 					<th>#</th>
 					<th>Nom</th>
-					<th>Actions</th>
+					{% if is_granted('ROLE_AUTHOR') %}
+						<th>Actions</th>
+					{% endif %}
 				</tr>
 			</thead>
 			<tbody>
@@ -22,20 +24,24 @@
 					{% for category in categories %}
 						<tr>
 							<td>{{ category.id }}</td>
-                            {# 
-                                path est une fonction de twig permettant de générer un lien vers une autre page.
-                                On génère ici le lien vers la méthode single_category en lui passant le paramètre dont on a besoin
-                                qui est l'id de la catégorie.
-                            #}
-							<td><a href="{{ path('single_category', {id: category.id}) }}">{{ category.name }}</a></td>
+							{# 
+								path est une fonction de twig permettant de générer un lien vers une autre page.
+								On génère ici le lien vers la méthode single_category en lui passant le paramètre dont on a besoin
+								qui est l'id de la catégorie.
+							#}
 							<td>
-								<a href="{{ path('update_category', {id: category.id}) }}">
-									<button class="btn btn-info">Modifier</button>
-								</a>
-								<a href="{{ path('delete_category', {id: category.id}) }}">
-									<button class="btn btn-danger" onclick="alert('Etes-vous sûr de vouloir supprimer?')">Supprimer</button>
-								</a>
+								<a href="{{ path('single_category', {id: category.id}) }}">{{ category.name }}</a>
 							</td>
+							{% if is_granted('ROLE_AUTHOR') %}
+								<td>
+									<a href="{{ path('update_category', {id: category.id}) }}">
+										<button class="btn btn-info">Modifier</button>
+									</a>
+									<a href="{{ path('delete_category', {id: category.id}) }}">
+										<button class="btn btn-danger" onclick="alert('Etes-vous sûr de vouloir supprimer?')">Supprimer</button>
+									</a>
+								</td>
+							{% endif %}
 						</tr>
 					{% endfor %}
 				{% else %}

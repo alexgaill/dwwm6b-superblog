@@ -33,7 +33,7 @@ class Post
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type:Types::STRING, length:40, nullable:true)]
-    #[Assert\File(maxSize:"2M", MimeTypes: ['image/png', 'image/jpeg'])]
+    #[Assert\File(maxSize:"2M", mimeTypes: ['image/png', 'image/jpeg'])]
     private ?string $picture = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
