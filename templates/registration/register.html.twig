@@ -15,6 +15,9 @@
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.plainPassword.first) }}
         {{ form_row(registrationForm.plainPassword.second) }}
+        {% if is_granted('ROLE_ADMIN') %}
+            {{form_row(registrationForm.roles)}}
+        {% endif %}
         {{ form_row(registrationForm.agreeTerms) }}
 
         <button type="submit" class="btn btn-primary">Inscription</button>

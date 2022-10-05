@@ -77,6 +77,8 @@ class PostController extends AbstractController
                 // On enregistre l'image en BDD
                 $post->setPicture($pictureName);
             }
+            // Associe l'utilisateur connecté
+            $post->setUser($this->getUser());
             $post->setCreatedAt(new \DateTime);
             $om = $this->manager->getManager();
             $om->persist($post);
