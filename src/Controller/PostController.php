@@ -158,4 +158,14 @@ class PostController extends AbstractController
         $this->addFlash('info', "L'article a bien été supprimé");
         return $this->redirectToRoute('app_post');
     }
+
+    #[Route("/post/search", name:"post_search", methods:["GET"])]
+    public function search(Request $request): Response
+    {
+        // On récupère la valeur de l'input search du formulaire de nav
+        $search = $request->get('search');
+        return $this->render('post/search.html.twig', [
+            'posts' => $this->manager->getRepository(Post::class)->searchPost($search)
+        ]);
+    }
 }

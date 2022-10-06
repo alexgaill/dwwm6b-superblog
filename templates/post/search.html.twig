@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li><a href="{{ path('single_post', {id:post.id}) }}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="test-warning">Aucun article ne correspond à la recherche</p>
+    {% endif %}
+    
+{% endblock %}

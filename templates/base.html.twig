@@ -35,28 +35,33 @@
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="#" id="userNav" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 									{% if app.user %}
-										{{ app.user.prenom }} {{ app.user.nom }}
+										{{ app.user.prenom }}
+										{{ app.user.nom }}
 									{% else %}
 										Utilisateur
 									{% endif %}
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="userNav">
-								{% if app.user %}
-									<li>
-										<a class="dropdown-item" href="{{path('app_logout')}}">Deconnexion</a>
-									</li>
-								{% else %}
-									<li>
-										<a class="dropdown-item" href="{{path('app_register')}}">Inscription</a>
-									</li>
-									<li><hr class="dropdown-divider"></li>
-									<li>
-										<a class="dropdown-item" href="{{path('app_login')}}">Connexion</a>
-									</li>
-								{% endif %}
+									{% if app.user %}
+										<li>
+											<a class="dropdown-item" href="{{path('app_logout')}}">Deconnexion</a>
+										</li>
+									{% else %}
+										<li>
+											<a class="dropdown-item" href="{{path('app_register')}}">Inscription</a>
+										</li>
+										<li><hr class="dropdown-divider"></li>
+										<li>
+											<a class="dropdown-item" href="{{path('app_login')}}">Connexion</a>
+										</li>
+									{% endif %}
 								</ul>
 							</li>
 						</ul>
+						<form class="d-flex" method="GET" action="{{ path('post_search') }}">
+							<input class="form-control me-2" type="search" placeholder="Rechercher un terme" aria-label="Search" name="search">
+							<button class="btn btn-outline-danger" type="submit">Search</button>
+						</form>
 					</div>
 				</div>
 			</nav>

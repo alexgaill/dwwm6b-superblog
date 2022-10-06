@@ -39,20 +39,30 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Post[] Returns an array of Post objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Post[] Returns an array of Post objects
+    */
+   public function searchPost($value): array
+   {
+    // On charge le createur de requête QueryBuilder
+        $qb = $this->createQueryBuilder('p');
+        // On associe la table category à notre requête
+        $qb->join('p.category', 'c')
+            // On ajoute à notre requête des orWhere pour rechercher la value dans le title
+            ->orWhere($qb->expr()->like('p.title', $qb->expr()->literal('%'.$value.'%')))
+            // et dans la description du post
+           ->orWhere($qb->expr()->like('p.description', $qb->expr()->literal('%'.$value.'%')))
+           // Comme ce sont des termes imprécis que nous devons chercher, nous devons utiliser LIKE.
+           // pour ça, on charge l'expression like ->expr()->like().
+           // Afin d'ajouter la possibilité qu'il y ai du texte avant ou après le terme,
+           // on indique que nous recherchons une expression literal afin d'utiliser les '%'
+           ->orWhere($qb->expr()->like('c.name', $qb->expr()->literal('%'.$value.'%')))
+           ;
+        // On retourne notre requête qui sera exécutée et ses résultats récupérés.
+        return $qb->getQuery()
+                ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Post
 //    {

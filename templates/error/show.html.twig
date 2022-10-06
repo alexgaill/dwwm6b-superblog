@@ -1,6 +1,5 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    <pre>
-        {{ dump(logger) }}
-    </pre>
+{# <h1>{{ exception.statusCode }} {{ exception.statusText }}</h1> #}
+<p class="text-danger">{{ exception.message }}</p>
 {% endblock %}

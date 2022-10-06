@@ -17,7 +17,7 @@ framework:
     php_errors:
         log: true
 
-    error_controller: App\Controller\Error\ErrorController::show
+    # error_controller: App\Controller\Error\ErrorController::show
 
 when@test:
     framework:
